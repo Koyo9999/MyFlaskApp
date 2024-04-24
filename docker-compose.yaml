@@ -1,0 +1,21 @@
+services:
+  flask-app:
+    image: my_flask_app-develop
+    container_name: my_flask_app-develop
+    build:
+      context: .
+      target: develop
+    ports:
+      - 5000:5000
+      - 5678:5678
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_DEBUG=1
+    entrypoint: [ "python", "-m", "debugpy", "--listen", "0.0.0.0:5678", "-m", "app",  "--wait-for-client", "--multiprocess", "-m", "flask", "run", "--host", "0.0.0.0", "--port", "5000" ]
+    networks:
+      - my_flask_app-develop
+
+networks:
+  my_flask_app-develop:
+    name: my_flask_app-develop
