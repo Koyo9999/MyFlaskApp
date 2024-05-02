@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<p>２０１５ー２０２０年、各市区町村の人口推移のグラフ化 githubのリンクは ↓ です</p>
+<a href="https://github.com/Koyo9999/MyFlaskApp" target="_blank" rel="noopener noreferrer">https://github.com/Koyo9999/MyFlaskApp</a>
+<form action="/" method="post">
+    <select name="prefecture">
+        {% for i in unique_prefecture %}
+            <option value={{ i }}>{{ i }}</option>
+        {% endfor %}
+    </select>
+    <p>{{ chosen_pref }} の推移を表示しています</p>
+    <button type="submit">filter</button>
+</form>
+
+<canvas id="myChart" width="800" height="2000"></canvas>
+<script>
+    // get Flask data
+    var labels = {{ c.labels | tojson }};
+    var pop_2015 = {{ c.pop_2015 | tojson }};
+    var pop_2020 = {{ c.pop_2020 | tojson }};
+
+    // draw graphs by Chart.js
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: '2015年の人口',
+                    data: pop_2015,
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: '2020年の人口',
+                    data: pop_2020,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+{% endblock %}
