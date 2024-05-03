@@ -21,6 +21,7 @@ df = df.replace('-', 0)
 tmp = df.columns.to_list()
 [pd.to_numeric(df[i], errors='coerce') for i in tmp[2:6]]
 df['population_2015'] = df['population_2020'] - df['diff_value']
+df = df[df['city'] != '1213_特別区部']
 df = df.reindex(columns=['prefecture',
                          'city',
                          'population_2020',
