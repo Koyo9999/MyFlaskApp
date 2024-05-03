@@ -4,7 +4,7 @@ from flask import (Flask, request, render_template)
 app = Flask(__name__)
 
 # get raw_data
-raw_data = pd.read_excel(r'\b01_01.xlsx',
+raw_data = pd.read_excel(r'b01_01.xlsx',
                          skiprows=9,
                          header=[1, 2, 3, 4, 5])
 cl = raw_data.columns
